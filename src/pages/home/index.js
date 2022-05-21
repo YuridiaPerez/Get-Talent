@@ -1,98 +1,95 @@
-import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-let urlApi = "https://jsonplaceholder.typicode.com/users";
+import React, { useState } from "react"
+import { Link } from "react-router-dom"
+import img1 from "assets/img1.png"
+import styles from "./style-home.module.scss"
+import * as api from "../../api"
+import s200 from "assets/s200.png"
 
 export const Home = () => {
-  const navigate = useNavigate();
-  // Cargando la petición a la API
-  const [loading, setLoading] = useState(false);
-  // Error
-  const [error, setError] = useState(false);
-  // Data
-  const [data, setData] = useState(null);
+  const [data, setData] = useState({
+    email: "",
+    password: "",
+  })
 
-  const getUsers = async () => {
-    setError(false); // Si teniamos algún error previamente
-    setLoading(true); // Activamos la pantalla de carga
-    // Hacemos la llamada a nuestro backend
-    fetch(urlApi)
-      // Then en Javascript es para "entonces"
-      .then((response) => {
-        // Tomamos la respuesta del backend (es la response)
-        if (response.ok) {
-          // Si la respuesta es correcta
-          // Regresamos la info transformada a json
-          return response.json();
-        } else {
-          // Si no es correcta, ponemos nuestro error en true
-          setError(true);
-          // Quitamos la carga
-          setLoading(false);
-          // Regresamos el error por default
-          return new Error(response.data);
-        }
+  const [success, setSuccess] = useState("")
+  const [error, setError] = useState("")
+
+  const submitForm = async () => {
+    try {
+      const { status, data } = await api.loginUser({
+        email,
+        password
       })
-      .then((data) => {
-        // Entonces si todo ha salido bien podemos trabajar con la data del backend
-        // Quitamos la carga
-        setLoading(false);
-        // Guardamos la info
-        setData(data);
-      })
-      .catch((error) => {
-        // Si tenemos algún error en nuestro codigo guardamos el error
-        setLoading(false);
-        setError(true);
-      });
-  };
-  const renderUsers = () => {
-    return (
-      <tbody>
-        {data?.map((item, key) => (
-          <tr key={key}>
-            <td>{item.name}</td>
-            <td>{item.email}</td>
-            <td>
-              <button
-                onClick={() => {
-                  navigate(`/edit/${item.id}`);
-                }}
-              >
-                Editar
-              </button>
-            </td>
-          </tr>
-        ))}
-      </tbody>
-    );
-  };
-  useEffect(() => {
-    getUsers();
-  }, []);
+
+      if (status === 200) setSuccess(true)
+
+      console.log(data)
+    } catch (err) {
+      setError(`Error(${err.status}): ${err.message}`)
+    }
+  }
+
+  const handleChange = (event) => {
+    setData({
+      ...data,
+      [event.target.name]: event.target.value,
+    })
+  }
+
+  const handleFormSubmit = (event) => {
+    event.preventDefault()
+    submitForm()
+  }
+
+  const { email, password } = data
+
+  if(success)
+  return <div className="form-wrapper Success">Login completado <br />
+    <img src={s200} alt="s200" />
+  </div>
+
   return (
-    <div className="page__container">
-      {/* If loading*/}
-      {loading ? (
-        <span>Cargando...</span>
-      ) : error ? (
-        // Else if error
-        <span>Ha ocurrido un error</span>
-      ) : (
-        // else
-        <>
-          <h1>Listado de users</h1>
-          <table>
-            <thead>
-              <tr>
-                <th>Nombre</th>
-                <th>Email</th>
-                <th>Acciones</th>
-              </tr>
-            </thead>
-            {renderUsers()}
-          </table>
-        </>
-      )}
+    <div className={styles.container}>
+      <div className={styles.section}>
+        <h1 className={styles.title}>¡Bienvenido!</h1>
+        <h3 className={styles.subtitle}>Por favor, inicia sesión.</h3>
+        <div className="banner-error">Correo electrónico y/o contraseña erroneos</div>
+        <form className={styles.form} onSubmit={handleFormSubmit}>
+          <label>
+            Correo:
+            {/* A form input that is using the `useForm` hook to validate the input. */}
+            <input
+              className={styles.input}
+              placeholder="Ingrese su correo electrónico"
+              type="email"
+              name="email"
+              value={data.email}
+              onChange={handleChange}
+            />
+          {error.email && <p className={styles.error}>{error.email.message}</p>}
+          </label>
+          <br />
+          <label>
+            Contraseña:
+            <input
+              className={`${styles.input} ${styles.password}`}
+              placeholder="Ingrese su contraseña"
+              type="password"
+              name="password"
+              value={data.password}
+              onChange={handleChange}
+            />
+          </label>
+          <input className={styles.btnSubmit} type="submit" value="Ingresar" />
+        </form>
+        <Link to="/forgot-password">¿Has olvidado tu contraseña?</Link>
+    
+        <span>¿No tienes una cuenta? </span>
+        <Link to="/sign-up">Regístrate aquí.</Link>
+        <span>¿Cuentas con un video de presentación? </span>
+        <Link to="/video">Agrégalo Aqui.</Link>
+      </div>
+      <img className={styles.img1} src={img1} alt="imagen representativa" />{" "}
     </div>
-  );
-};
+  )
+}

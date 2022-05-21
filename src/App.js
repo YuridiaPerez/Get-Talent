@@ -1,8 +1,7 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
-import { Create, Home, HomeCreate } from "pages";
-import { FormExample } from "pages/formExample";
-import Navbar from "components/Navbar";
-import "./App.css";
+import { BrowserRouter, Routes, Route } from "react-router-dom"
+import { Login, Home, ForgotPassword, SignUp, Video} from "pages"
+import Navbar from "components/Navbar"
+import "./App.scss"
 
 function App() {
   return (
@@ -10,13 +9,14 @@ function App() {
       <Navbar />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/edit" element={<Create />} />
-        <Route path="/home-create/" element={<HomeCreate />} />
-        <Route path="/edit/:id" element={<Create />} />
-        <Route path="/form" element={<FormExample />} />
+        <Route path="/" element={<Login />} /> {/*Create*/}
+        <Route path="/forgot-password/" element={<ForgotPassword />} />
+        {/* HomeCreate*/}
+        <Route path="/sign-up" element={<SignUp />} /> {/* Create */}
+        <Route path="/Video" element={<Video />} /> 
       </Routes>
     </BrowserRouter>
-  );
+  )
 }
 
-export default App;
+export default App

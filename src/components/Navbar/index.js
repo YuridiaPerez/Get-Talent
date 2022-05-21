@@ -1,14 +1,20 @@
 import React from "react";
-import "./styles.css";
 import { useNavigate } from "react-router-dom";
+import "./st-nav.module.scss";
+import styles from "./st-nav.module.scss";
+
 export default function Navbar() {
   const navigate = useNavigate();
   return (
     <div className="navbar">
-      <span>React template</span>
       <div className="navbar__buttons">
-        <span onClick={() => navigate("/")}>Home</span>
-        <span onClick={() => navigate("/edit")}>Crear</span>
+        <div className={styles.navbar}>
+          <span>Get Talent</span>
+          <div className={styles.navbar__buttons}>
+            <span onClick={() => navigate("/")}>Home</span>
+            <span onClick={() => navigate("/edit")}>Crear</span>
+          </div>
+        </div>
       </div>
     </div>
   );
