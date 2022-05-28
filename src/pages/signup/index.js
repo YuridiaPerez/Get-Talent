@@ -2,7 +2,7 @@ import useForms from "components/useForms"
 import React, { useState } from "react"
 import prueba from "assets/prueba.png"
 import style from "./style-sig.module.scss"
-
+import swal from "sweetalert"
 import * as api from "../../api"
 
 export const SignUp = () => {
@@ -23,12 +23,22 @@ export const SignUp = () => {
         password,
         type_user,
       })
+      console.log(data)
 
       if (status === 200) setSuccess(true)
-
-      console.log(data)
+      return swal({
+        Title: "Enhorabuena",
+        icon: "error",
+        button: "Aceptar"
+      });
     } catch (err) {
       setError(`Error(${err.status}): ${err.message}`)
+      return swal({
+        title:"Error",
+        text: "A ocurrido un error",
+        icon: "error",
+        button: "Aceptar"
+      });
     }
   }
 
@@ -48,7 +58,7 @@ const { handleChange, handleFormSubmit, values, errors } = useForms(
   //Mostrar el mensaje de exito si el estado success es true
   if (success)
     return <div className="form-wrapper Success">Registro completado</div>
-
+  
   return (
     <div className={style.container}>
       <div className={style.header}>

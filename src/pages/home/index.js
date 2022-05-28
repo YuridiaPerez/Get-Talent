@@ -4,6 +4,7 @@ import img1 from "assets/img1.png"
 import styles from "./style-home.module.scss"
 import * as api from "../../api"
 import s200 from "assets/s200.png"
+import swal from "sweetalert"
 
 export const Home = () => {
   const [data, setData] = useState({
@@ -20,12 +21,22 @@ export const Home = () => {
         email,
         password
       })
+      console.log(data)
 
       if (status === 200) setSuccess(true)
-
-      console.log(data)
+      return swal({
+        Title: "Enhorabuena",
+        icon: "error",
+        button: "Aceptar"
+      });
     } catch (err) {
       setError(`Error(${err.status}): ${err.message}`)
+      return swal({
+        title:"Error",
+        text: "A ocurrido un error",
+        icon: "error",
+        button: "Aceptar"
+      });
     }
   }
 
