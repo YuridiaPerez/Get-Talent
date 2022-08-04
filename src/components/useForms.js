@@ -10,6 +10,8 @@ const useForms = (submitForm, initialValue) => {
   //const [dataIsCorrect, setDataIsCorrect] = useState(false)
   // Cambia el estado de los valores
   const handleChange = (event) => {
+    console.log("Field change:", event.target.name, event.target.value)
+    
     setValues({
       ...values,
       [event.target.name]: event.target.value,

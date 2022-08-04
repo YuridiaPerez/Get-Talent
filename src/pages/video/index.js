@@ -1,33 +1,37 @@
-import React, { useState } from "react";
-import validator from 'validator';
-  
+import React, { useState } from "react"
+import validator from "validator"
+import Navbar from "components/Navbar"
+import style from "./style-video.module.scss"
+
 export const Video = () => {
-  
-  const [errorMessage, setErrorMessage] = useState('')
-    
+  const [errorMessage, setErrorMessage] = useState("")
+
   const validate = (value) => {
-    
     if (validator.isURL(value)) {
-      setErrorMessage('URL valida')
+      setErrorMessage(" ")
     } else {
-      setErrorMessage('no es una URL')
+      setErrorMessage("Lo sentimos, no es una URL válida.")
     }
   }
-  
+
   return (
-    <div style={{
-      marginLeft: '200px',
-    }}>
+    <div className={style.container}>
       <pre>
-        <h2>URL video presentación</h2>
-        <span>Ingrese la URL correspondiente: </span><input type="text" 
-        onChange={(e) => validate(e.target.value)}></input> <br />
-        <input type="submit" value="Guardar"></input>
-        <span style={{
-          fontWeight: 'bold',
-          color: 'red',
-        }}>{errorMessage}</span>
-      </pre>
+        <div className={style.containerTitle}>
+        </div>
+        <p className={style.subtitle}>
+          Agregar la URL del video donde este alojado:{" "}
+        </p>
+        <input
+          className={style.inputURL}
+          type="text"
+          onChange={(e) => validate(e.target.value)}
+        />
+        <div className={style.divMensaje}>
+          <span className={style.messageError}>{errorMessage}</span>
+        </div>
+        <input className={style.submit} type="submit" value="Guardar" />
+      </pre>  
     </div>
-  );
+  )
 }

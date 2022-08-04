@@ -12,7 +12,6 @@ export default function Navbar() {
           <span>Get Talent</span>
           <div className={styles.navbar__buttons}>
             <span onClick={() => navigate("/")}>Home</span>
-            <span onClick={() => navigate("/edit")}>Crear</span>
           </div>
         </div>
       </div>
